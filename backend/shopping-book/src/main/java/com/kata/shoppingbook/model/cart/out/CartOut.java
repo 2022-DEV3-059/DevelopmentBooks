@@ -8,6 +8,15 @@ public class CartOut {
     private BigDecimal totalPrice;
     private String sessionToken;
 
+    public CartOut() {
+    }
+
+    public CartOut(Collection<ItemWithDiscount> itemsAndDiscount, BigDecimal totalPrice, String sessionToken) {
+        this.itemsAndDiscount = itemsAndDiscount;
+        this.totalPrice = totalPrice;
+        this.sessionToken = sessionToken;
+    }
+
     public Collection<ItemWithDiscount> getItemsAndDiscount() {
         return itemsAndDiscount;
     }

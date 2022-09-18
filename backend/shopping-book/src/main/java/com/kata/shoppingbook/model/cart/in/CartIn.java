@@ -6,6 +6,14 @@ public class CartIn {
     private Collection<CartItem> cartItems;
     private String sessionToken;
 
+    public CartIn() {
+    }
+
+    public CartIn(Collection<CartItem> cartItems, String sessionToken) {
+        this.cartItems = cartItems;
+        this.sessionToken = sessionToken;
+    }
+
     public Collection<CartItem> getCartItems() {
         return cartItems;
     }

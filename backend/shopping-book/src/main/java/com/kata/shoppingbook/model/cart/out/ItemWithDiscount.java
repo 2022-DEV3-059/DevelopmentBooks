@@ -10,6 +10,15 @@ public class ItemWithDiscount {
     private double discount;
     private BigDecimal totalPrice;
 
+    public ItemWithDiscount() {
+    }
+
+    public ItemWithDiscount(Collection<Book> books, double discount, BigDecimal totalPrice) {
+        this.books = books;
+        this.discount = discount;
+        this.totalPrice = totalPrice;
+    }
+
     public Collection<Book> getBooks() {
         return books;
     }

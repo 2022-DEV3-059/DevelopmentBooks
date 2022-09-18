@@ -6,6 +6,14 @@ public class CartItem {
     private Book book;
     private Integer quantity;
 
+    public CartItem(Book book, Integer quantity) {
+        this.book = book;
+        this.quantity = quantity;
+    }
+
+    public CartItem() {
+    }
+
     public Book getBook() {
         return book;
     }
