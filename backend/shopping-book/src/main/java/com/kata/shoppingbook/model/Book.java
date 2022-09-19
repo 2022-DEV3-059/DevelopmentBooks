@@ -1,12 +1,20 @@
 package com.kata.shoppingbook.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
 public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bookId;
     private String title;
     private Integer releaseYear;
+
+    @ManyToOne
+    @JoinColumn(name = "authorId")
     private Author author;
     private BigDecimal price;
     private String coverImage;
