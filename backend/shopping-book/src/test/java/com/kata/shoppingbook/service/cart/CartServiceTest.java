@@ -5,19 +5,22 @@ import com.kata.shoppingbook.model.Book;
 import com.kata.shoppingbook.model.cart.in.CartIn;
 import com.kata.shoppingbook.model.cart.in.CartItem;
 import com.kata.shoppingbook.model.cart.out.CartOut;
+import com.kata.shoppingbook.model.cart.out.ItemWithDiscount;
+import com.kata.shoppingbook.service.discount.IDiscountService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-
 public class CartServiceTest {
 
-    private final CartService cartService = new CartService();
+
+    private final IDiscountService discountService = Mockito.mock(IDiscountService.class);
+    private final CartService cartService = new CartService(discountService);
+
 
     @Test
     void addToCartTestFor1Call(){
@@ -35,6 +38,21 @@ public class CartServiceTest {
                         1
                 )
         ), sessionToken);
+
+        List<ItemWithDiscount> itemWithDiscounts = Collections.singletonList(
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(cart.getCartItems()))
+                .thenReturn(itemWithDiscounts);
 
         CartOut cartOut = cartService.addToCart(cart);
 
@@ -64,6 +82,21 @@ public class CartServiceTest {
                 )
         ), sessionToken);
 
+        List<ItemWithDiscount> itemWithDiscounts = Collections.singletonList(
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(cart1.getCartItems()))
+                .thenReturn(itemWithDiscounts);
+
         cartService.addToCart(cart1);
 
         CartIn cart2 = new CartIn(Collections.singleton(
@@ -79,6 +112,31 @@ public class CartServiceTest {
                         1
                 )
         ), sessionToken);
+
+        List<ItemWithDiscount> itemWithDiscounts2 = Arrays.asList(
+                new ItemWithDiscount(
+                        Collections.singleton( new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                ),
+                new ItemWithDiscount(
+                        Collections.singleton( new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(cart2.getCartItems()))
+                .thenReturn(itemWithDiscounts2);
 
         CartOut cartOut = cartService.addToCart(cart2);
 
@@ -107,6 +165,21 @@ public class CartServiceTest {
                 )
         ), sessionToken1);
 
+        List<ItemWithDiscount> itemWithDiscounts1 = Collections.singletonList(
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(cart1.getCartItems()))
+                .thenReturn(itemWithDiscounts1);
+
         CartOut cartOut1 = cartService.addToCart(cart1);
 
         assertNotNull(cartOut1);
@@ -130,6 +203,21 @@ public class CartServiceTest {
                         1
                 )
         ), sessionToken2);
+
+        List<ItemWithDiscount> itemWithDiscounts2 = Collections.singletonList(
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(cart2.getCartItems()))
+                .thenReturn(itemWithDiscounts2);
 
         CartOut cartOut2 = cartService.addToCart(cart2);
 
