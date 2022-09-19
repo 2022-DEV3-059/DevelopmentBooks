@@ -51,7 +51,7 @@ public class CartServiceTest {
                         )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
                 )
         );
-        Mockito.when(discountService.getDiscountForCart(cart.getCartItems()))
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
                 .thenReturn(itemWithDiscounts);
 
         CartOut cartOut = cartService.addToCart(cart);
@@ -94,7 +94,7 @@ public class CartServiceTest {
                         )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
                 )
         );
-        Mockito.when(discountService.getDiscountForCart(cart1.getCartItems()))
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
                 .thenReturn(itemWithDiscounts);
 
         cartService.addToCart(cart1);
@@ -135,7 +135,7 @@ public class CartServiceTest {
                         )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
                 )
         );
-        Mockito.when(discountService.getDiscountForCart(cart2.getCartItems()))
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
                 .thenReturn(itemWithDiscounts2);
 
         CartOut cartOut = cartService.addToCart(cart2);
@@ -177,7 +177,7 @@ public class CartServiceTest {
                         )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
                 )
         );
-        Mockito.when(discountService.getDiscountForCart(cart1.getCartItems()))
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
                 .thenReturn(itemWithDiscounts1);
 
         CartOut cartOut1 = cartService.addToCart(cart1);
