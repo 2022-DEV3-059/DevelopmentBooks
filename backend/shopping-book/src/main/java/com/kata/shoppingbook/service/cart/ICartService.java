@@ -5,4 +5,6 @@ import com.kata.shoppingbook.model.cart.out.CartOut;
 
 public interface ICartService {
     public CartOut addToCart(CartIn cart);
+
+    public CartOut getCart(String sessionToken);
 }

@@ -7,10 +7,7 @@ import com.kata.shoppingbook.model.cart.out.ItemWithDiscount;
 import com.kata.shoppingbook.service.discount.IDiscountService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CartService implements ICartService {
 
@@ -26,20 +23,21 @@ public class CartService implements ICartService {
     public CartOut addToCart(CartIn cart) {
         String sessionToken = cart.getSessionToken();
 
-
         if(USER_CART.get(sessionToken) == null) {
             USER_CART.put(sessionToken, cart);
         } else {
             appendCartForSession(cart);
         }
 
-        List<ItemWithDiscount> itemsAndDiscount = discountService.getDiscountForCart(USER_CART.get(sessionToken).getCartItems());
+        return getCartOutByCartIn(USER_CART.get(sessionToken));
+    }
 
-        BigDecimal totalPrice = itemsAndDiscount.stream()
-                .map(ItemWithDiscount::getTotalPrice)
-                .reduce(new BigDecimal(0), BigDecimal::add);
-
-        return new CartOut(itemsAndDiscount, totalPrice, sessionToken);
+    @Override
+    public CartOut getCart(String sessionToken) {
+        if(USER_CART.get(sessionToken) != null) {
+            return getCartOutByCartIn(USER_CART.get(sessionToken));
+        }
+        return new CartOut(Collections.emptyList(), BigDecimal.ZERO, sessionToken);
     }
 
     private void appendCartForSession(CartIn cart){
@@ -48,5 +46,15 @@ public class CartService implements ICartService {
         List<CartItem> existingItems = new ArrayList<>(USER_CART.get(session).getCartItems());
         existingItems.addAll(newItems);
         USER_CART.put(session, new CartIn(existingItems, session));
+    }
+
+    private CartOut getCartOutByCartIn(CartIn cartIn){
+        List<ItemWithDiscount> itemsAndDiscount = discountService.getDiscountForCart(cartIn.getCartItems());
+
+        BigDecimal totalPrice = itemsAndDiscount.stream()
+                .map(ItemWithDiscount::getTotalPrice)
+                .reduce(new BigDecimal(0), BigDecimal::add);
+
+        return new CartOut(itemsAndDiscount, totalPrice, cartIn.getSessionToken());
     }
 }

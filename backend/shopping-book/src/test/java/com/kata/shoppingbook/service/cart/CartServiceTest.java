@@ -229,4 +229,60 @@ public class CartServiceTest {
     }
 
 
+    @Test
+    void getCartForEmptySession() {
+        String session= UUID.randomUUID().toString();
+
+        CartOut cart = cartService.getCart(session);
+
+        assertNotNull(cart);
+        assertEquals(Collections.emptyList(), cart.getItemsAndDiscount());
+        assertEquals(BigDecimal.ZERO, cart.getTotalPrice());
+        assertEquals(session, cart.getSessionToken());
+    }
+
+    @Test
+    void getCartForNonEmptySession() {
+        String session= UUID.randomUUID().toString();
+
+        // add to cart
+
+        CartIn cart1 = new CartIn(Collections.singleton(
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                )
+        ), session);
+
+        List<ItemWithDiscount> itemWithDiscounts = Collections.singletonList(
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
+                .thenReturn(itemWithDiscounts);
+
+        cartService.addToCart(cart1);
+
+        CartOut cart = cartService.getCart(session);
+
+        assertNotNull(cart);
+        assertEquals(1, cart.getItemsAndDiscount().size());
+        assertEquals(new BigDecimal(50).setScale(2, RoundingMode.HALF_UP), cart.getTotalPrice());
+        assertEquals(session, cart.getSessionToken());
+    }
 }
