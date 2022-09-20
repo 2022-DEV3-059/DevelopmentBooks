@@ -1,4 +1,4 @@
-package com.kata.shoppingbook.service.controller;
+package com.kata.shoppingbook.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
