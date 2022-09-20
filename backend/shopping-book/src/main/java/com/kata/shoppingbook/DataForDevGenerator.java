@@ -14,7 +14,7 @@ import java.net.InetAddress;
 import java.util.Arrays;
 
 @Component
-@Profile("dev")
+@Profile({"dev","test"})
 public class DataForDevGenerator implements CommandLineRunner {
 
     @Value("${server.port}")

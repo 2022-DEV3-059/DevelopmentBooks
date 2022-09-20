@@ -5,10 +5,12 @@ import com.kata.shoppingbook.model.cart.in.CartItem;
 import com.kata.shoppingbook.model.cart.out.CartOut;
 import com.kata.shoppingbook.model.cart.out.ItemWithDiscount;
 import com.kata.shoppingbook.service.discount.IDiscountService;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
 
+@Service
 public class CartService implements ICartService {
 
     private static final Map<String, CartIn> USER_CART = new HashMap<>();
