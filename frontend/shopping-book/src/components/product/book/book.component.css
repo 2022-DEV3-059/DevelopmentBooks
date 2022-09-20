@@ -1,0 +1,8 @@
+.card {
+    width: calc((100% / 5) - 15px );
+}
+.book-cover{
+    height: 150px;
+    object-fit: cover;
+    object-position: 5px 10%; 
+}

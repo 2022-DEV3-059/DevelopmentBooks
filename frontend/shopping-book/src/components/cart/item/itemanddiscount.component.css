@@ -1,0 +1,30 @@
+.table {
+    width: 100%;
+}
+
+.table td img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.table td p {
+    margin: 0;
+    padding-bottom: 0;
+}
+
+.table.price-discount {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0 10px 10px 0;
+}
+
+.table td:last-child {
+    width: 100px;
+}
+
+.itemWithDiscount {
+    width: 100%;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

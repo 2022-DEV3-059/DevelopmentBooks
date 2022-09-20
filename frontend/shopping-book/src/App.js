@@ -20,14 +20,14 @@ function App() {
     cartItemsResult.then((cartOut) => {
       setCartCount(cartOut.cartCount);
     })
-    
+
   },[]);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home cartCount={cartCount}/>} >
-          <Route index path='cart' element={<Cart />} />
+          <Route index path='cart' element={<Cart cartCoundUpdater={setCartCount}/>} />
           <Route path='books' element={<Books updateCartCountAction={setCartCount}/>} />
         </Route>
       </Routes>

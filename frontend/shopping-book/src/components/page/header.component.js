@@ -8,7 +8,7 @@ export default function Header({cartCount}) {
             <li className="nav-item">
                 <Link className="nav-link active" aria-current="page" to="/books">BOOKS</Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" style={{position: "sticky", top: 0}}>
                 <Link type="button" className="btn btn-primary position-relative" to="/cart">
                     CART <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{cartCount}</span>
                 </Link>

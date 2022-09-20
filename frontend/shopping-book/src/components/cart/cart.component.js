@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getCart } from '../../services/cart.service';
+import { getCart, performRemoveToCart } from '../../services/cart.service';
 import { getSessionToken } from '../../services/user.service';
 import './cart.component.css';
 import ItemsAndDiscount from './item/itemanddiscount.component';
 
-export default function Cart() {
+export default function Cart({cartCoundUpdater}) {
 
     const [cart, setCart] = useState({});
 
@@ -17,33 +17,39 @@ export default function Cart() {
 
     }, []);
 
+
+    const removeToCart = (book) => {
+        const cart = {
+            sessionToken: getSessionToken(),
+            item: {
+                book: book,
+                quantity: 1
+            }
+        }
+        const removeItemResult = performRemoveToCart(cart);
+        removeItemResult.then((cartOut) => {
+            setCart(cartOut);
+            cartCoundUpdater(cartOut.cartCount);
+        })
+    }
+
     const cartItemsComponent = cart.itemsAndDiscount?.map((item, index) => {
-        return (
-            <div key={index}>
-                <ItemsAndDiscount itemWithDiscount={item} />
-            </div>
-        )
+        return <ItemsAndDiscount key={index} itemWithDiscount={item} handleRemoveToCart={removeToCart}/>
     });
 
     return (
-        <div>
-            <section className="h-100 gradient-custom">
-                <div className="container py-5">
-                    <div className="row d-flex justify-content-center my-4">
-                        <div className="col-md-12">
-                            <div className="card mb-12">
-                                <div className="card-header py-3">
-                                    <h5 className="mb-0">Cart - {cart.cartCount} items</h5>
-                                </div>
-                                <div className="card-body">
-                                    {cartItemsComponent}
-                                    <p className='mb-0 right'>Total Price : {cart.totalPrice}$</p>
-                                </div>
-                            </div>
-                        </div>
+        <div className ="container">
+            <div className='content'>
+                <div style={{width: "75%"}}>
+                    <div className='head'>
+                        <h5 className="">Cart - {cart.cartCount} items</h5>
+                        <p className='totalPrice'>Total Price : {cart.totalPrice}$</p>
                     </div>
+                    
+                    {cartItemsComponent}
+                    <p className='totalPrice itemWithDiscount'>Total Price : {cart.totalPrice}$</p>
                 </div>
-            </section>
+            </div>
         </div>
     );
 }

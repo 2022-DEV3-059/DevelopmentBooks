@@ -39,11 +39,7 @@ export default function Books({updateCartCountAction}) {
 
 
     const bookComponent = books.map(b => {
-        return (
-            <div key={b.bookId}>
-                <Book book={b} addToCartAction={handleAddToCart} />
-            </div>
-        )
+        return <Book key={b.bookId} book={b} addToCartAction={handleAddToCart} />
     })
 
 
