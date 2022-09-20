@@ -26,9 +26,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home cartCount={cartCount}/>} >
-          <Route index path='cart' element={<Cart cartCoundUpdater={setCartCount}/>} />
-          <Route path='books' element={<Books updateCartCountAction={setCartCount}/>} />
+        <Route path='/' exact element={<Home cartCount={cartCount}/>} >
+          <Route index exact path='cart' element={<Cart cartCoundUpdater={setCartCount}/>} />
+          <Route path='books' exact element={<Books updateCartCountAction={setCartCount}/>} />
         </Route>
       </Routes>
     </BrowserRouter>
