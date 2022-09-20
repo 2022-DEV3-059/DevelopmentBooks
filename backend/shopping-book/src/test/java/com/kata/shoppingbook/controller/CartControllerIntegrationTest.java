@@ -19,10 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -260,5 +257,51 @@ public class CartControllerIntegrationTest {
         });
 
         assertEquals(1, cartOut.getItemsAndDiscount().size());
+    }
+
+    @Test
+    void testCartCount() throws Exception {
+        String sessionToken = UUID.randomUUID().toString();
+
+        CartIn cartIn = new CartIn(Arrays.asList(
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        2
+                ),
+                new CartItem(
+                        new Book(
+                                2,
+                                "Mock title 2",
+                                2022,
+                                new Author(2, "author 2"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                )
+        ), sessionToken);
+
+        MvcResult result = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/cart")
+                                .contentType("application/json")
+                                .content(MAPPER.writeValueAsBytes(cartIn)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemsAndDiscount").hasJsonPath())
+                .andExpect(jsonPath("$.totalPrice").hasJsonPath())
+                .andExpect(jsonPath("$.sessionToken").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").hasJsonPath())
+                .andReturn();
+        CartOut cartOut = MAPPER.readValue(result.getResponse().getContentAsString(), new TypeReference<CartOut>() {
+        });
+
+        assertEquals(3, cartOut.getCartCount());
+
     }
 }

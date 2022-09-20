@@ -8,6 +8,8 @@ public class CartOut {
     private BigDecimal totalPrice;
     private String sessionToken;
 
+    private Integer cartCount;
+
     public CartOut() {
     }
 
@@ -15,6 +17,11 @@ public class CartOut {
         this.itemsAndDiscount = itemsAndDiscount;
         this.totalPrice = totalPrice;
         this.sessionToken = sessionToken;
+
+        this.cartCount = itemsAndDiscount
+                .stream()
+                .mapToInt(i -> i.getBooks().size())
+                .sum();
     }
 
     public Collection<ItemWithDiscount> getItemsAndDiscount() {
@@ -39,6 +46,10 @@ public class CartOut {
 
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
+    }
+
+    public Integer getCartCount() {
+        return cartCount;
     }
 
     @Override
