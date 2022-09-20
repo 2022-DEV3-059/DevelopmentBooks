@@ -1,5 +1,7 @@
 package com.kata.shoppingbook.model.cart.out;
 
+import org.springframework.util.CollectionUtils;
+
 import java.math.BigDecimal;
 import java.util.Collection;
 
@@ -18,10 +20,14 @@ public class CartOut {
         this.totalPrice = totalPrice;
         this.sessionToken = sessionToken;
 
-        this.cartCount = itemsAndDiscount
-                .stream()
-                .mapToInt(i -> i.getBooks().size())
-                .sum();
+        if(CollectionUtils.isEmpty(itemsAndDiscount)) {
+            this.cartCount = 0 ;
+        } else {
+            this.cartCount = itemsAndDiscount
+                    .stream()
+                    .mapToInt(i -> i.getBooks().size())
+                    .sum();
+        }
     }
 
     public Collection<ItemWithDiscount> getItemsAndDiscount() {

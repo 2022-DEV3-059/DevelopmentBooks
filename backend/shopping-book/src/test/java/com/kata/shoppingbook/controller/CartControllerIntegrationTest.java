@@ -304,4 +304,27 @@ public class CartControllerIntegrationTest {
         assertEquals(3, cartOut.getCartCount());
 
     }
+
+    @Test
+    void testCartCountWithEmptyCartIn() throws Exception {
+        String sessionToken = UUID.randomUUID().toString();
+
+        CartIn cartIn = new CartIn(Collections.emptyList(),sessionToken);
+
+        MvcResult result = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/cart")
+                                .contentType("application/json")
+                                .content(MAPPER.writeValueAsBytes(cartIn)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemsAndDiscount").hasJsonPath())
+                .andExpect(jsonPath("$.totalPrice").hasJsonPath())
+                .andExpect(jsonPath("$.sessionToken").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").hasJsonPath())
+                .andReturn();
+        CartOut cartOut = MAPPER.readValue(result.getResponse().getContentAsString(), new TypeReference<CartOut>() {
+        });
+
+        assertEquals(0, cartOut.getCartCount());
+
+    }
 }
