@@ -9,3 +9,13 @@ export const performAddToCart = async (cart) => {
         return error.message;
     }
 }
+
+export const getCart = async (sessionToken) => {
+    try {
+        const response = await axiosConfig.get("/cart/" + sessionToken);
+        return response.data;
+    } catch (error) {
+        console.error(error)
+        return error.message;
+    }
+}

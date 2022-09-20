@@ -1,70 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { getCart } from '../../services/cart.service';
 import './cart.component.css';
-import ItemsAndDiscount from './itemanddiscount.component';
+import ItemsAndDiscount from './item/itemanddiscount.component';
 
 export default function Cart() {
 
-    const cartItems= {
-        itemsAndDiscount : [
-            {
-                discount : 5,
-                totalPrice : 95,
-                books : [
-                    {
-                        bookId: 1,
-                        title: "Book title 1",
-                        releaseYear: 2020,
-                        author: {authorId : 1 , authorName : "author name 1"},
-                        coverImage: "https://raw.githubusercontent.com/stephane-genicot/katas/master/images/Kata_DevelopmentBooks_CleanCode.png",
-                        price: 50
-                    },
-                    {
-                        bookId: 2,
-                        title: "Book title 2",
-                        releaseYear: 2022,
-                        author: {authorId : 2 , authorName : "author name 2"},
-                        coverImage: "https://raw.githubusercontent.com/stephane-genicot/katas/master/images/Kata_DevelopmentBooks_CleanCoder.png",
-                        price: 70
-                    },
-                ]
-            },
-            {
-                discount : 5,
-                totalPrice : 95,
-                books : [
-                    {
-                        bookId: 1,
-                        title: "Book title 1",
-                        releaseYear: 2020,
-                        author: {authorId : 1 , authorName : "author name 1"},
-                        coverImage: "https://raw.githubusercontent.com/stephane-genicot/katas/master/images/Kata_DevelopmentBooks_CleanCode.png",
-                        price: 50
-                    },
-                    {
-                        bookId: 2,
-                        title: "Book title 2",
-                        releaseYear: 2022,
-                        author: {authorId : 2 , authorName : "author name 2"},
-                        coverImage: "https://raw.githubusercontent.com/stephane-genicot/katas/master/images/Kata_DevelopmentBooks_CleanCoder.png",
-                        price: 70
-                    },
-                ]
-            }
-        ],
-        totalPrice : 95
-    }
+    const [cart, setCart] = useState({});
 
-    const cart = cartItems;
+    useEffect(() => {
+        const cartItemsResult = getCart("sessionToken");
 
+        cartItemsResult.then((cartOut) => {
+            setCart(cartOut);
+        })
 
-    const cartItemsComponent = cart.itemsAndDiscount.map( i => {
+    }, []);
+
+    const cartItemsComponent = cart.itemsAndDiscount?.map((item, index) => {
         return (
-            <div key={i}>
-                <ItemsAndDiscount itemWithDiscount={i}/>
+            <div key={index}>
+                <ItemsAndDiscount itemWithDiscount={item} />
             </div>
         )
-    })
-
+    });
 
     return (
         <div>
@@ -86,5 +44,5 @@ export default function Cart() {
                 </div>
             </section>
         </div>
-    )
+    );
 }
