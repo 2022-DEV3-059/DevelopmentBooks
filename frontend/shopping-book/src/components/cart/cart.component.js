@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCart } from '../../services/cart.service';
+import { getSessionToken } from '../../services/user.service';
 import './cart.component.css';
 import ItemsAndDiscount from './item/itemanddiscount.component';
 
@@ -8,7 +9,7 @@ export default function Cart() {
     const [cart, setCart] = useState({});
 
     useEffect(() => {
-        const cartItemsResult = getCart("sessionToken");
+        const cartItemsResult = getCart(getSessionToken());
 
         cartItemsResult.then((cartOut) => {
             setCart(cartOut);
@@ -32,7 +33,7 @@ export default function Cart() {
                         <div className="col-md-12">
                             <div className="card mb-12">
                                 <div className="card-header py-3">
-                                    <h5 className="mb-0">Cart - 2 items</h5>
+                                    <h5 className="mb-0">Cart - {cart.cartCount} items</h5>
                                 </div>
                                 <div className="card-body">
                                     {cartItemsComponent}

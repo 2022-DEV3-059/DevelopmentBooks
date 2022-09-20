@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAllBooks } from '../../../services/book.service';
 import { performAddToCart } from '../../../services/cart.service';
+import { getSessionToken } from '../../../services/user.service';
 import Book from '../book/book.component';
 import './books.component.css';
 
@@ -25,7 +26,7 @@ export default function Books({updateCartCountAction}) {
 
 
         const cartIn = {
-            sessionToken : "sessionToken",
+            sessionToken : getSessionToken(),
             cartItems: [{book : book, quantity: 1}]
         };
 
