@@ -12,22 +12,42 @@ public class CartController implements ICartController {
 
     private ICartService cartService;
 
+
     public CartController(ICartService cartService) {
         this.cartService = cartService;
     }
 
+    /**
+     * Rest api to add items to cart
+     *
+     * @param cartIn
+     * @return
+     */
     @Override
     @PostMapping
     public CartOut addToCart(@RequestBody  CartIn cartIn) {
         return cartService.addToCart(cartIn);
     }
 
+    /**
+     * Rest api to get all items from user cart
+     *
+     * @param sessionToken
+     * @return
+     */
     @Override
     @GetMapping("/{sessionToken}")
     public CartOut getCart(@PathVariable String sessionToken) {
         return cartService.getCart(sessionToken);
     }
 
+    /**
+     * Rest api to remove items to cart
+     *
+     * @param sessionToken
+     * @param cartItem
+     * @return
+     */
     @Override
     @DeleteMapping("/{sessionToken}")
     public CartOut removeItem(@PathVariable String sessionToken, @RequestBody CartItem cartItem) {

@@ -19,6 +19,11 @@ public class BookController implements IBookController {
         this.bookDAO = bookDAO;
     }
 
+    /**
+     * Rest api to gel all books
+     *
+     * @return list of book
+     */
     @Override
     @GetMapping
     public List<Book> getAllBook() {

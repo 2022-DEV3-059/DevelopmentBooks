@@ -14,6 +14,12 @@ import java.util.*;
 @Service
 public class DiscountService implements IDiscountService {
 
+    /**
+     * Get the discount for each book purchased by grouping the different books in the basket.
+     *
+     * @param cartItems the items in the basket
+     * @return the items and their discount
+     */
     @Override
     public List<ItemWithDiscount> getDiscountForCart(Collection<CartItem> cartItems) {
         List<ItemWithDiscount> itemWithDiscounts = new ArrayList<>();

@@ -5,9 +5,15 @@ import com.kata.shoppingbook.model.Discount;
 
 public class DiscountFactory {
 
-    public static Discount getDiscount(int numberSerie) {
+    /**
+     * Provide the discount for items
+     *
+     * @param itemCount the item's count
+     * @return discount
+     */
+    public static Discount getDiscount(int itemCount) {
         // TODO : Make these rules to database
-        switch (numberSerie) {
+        switch (itemCount) {
             case 2:
                 //5%
                 return new Discount(5d, 0.95);

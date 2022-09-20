@@ -22,6 +22,12 @@ public class CartService implements ICartService {
         this.discountService = discountService;
     }
 
+    /**
+     * Add item to the user cart
+     *
+     * @param cart
+     * @return all items in the cart
+     */
     @Override
     public CartOut addToCart(CartIn cart) {
         String sessionToken = cart.getSessionToken();
@@ -35,6 +41,14 @@ public class CartService implements ICartService {
         return getCartOutByCartIn(USER_CART.get(sessionToken));
     }
 
+
+    /**
+     * Get all items in the user cart
+     *
+     * @param sessionToken the session token for user
+     *
+     * @return all items in the cart
+     */
     @Override
     public CartOut getCart(String sessionToken) {
         if(USER_CART.get(sessionToken) != null) {
@@ -43,6 +57,13 @@ public class CartService implements ICartService {
         return new CartOut(Collections.emptyList(), BigDecimal.ZERO, sessionToken);
     }
 
+    /**
+     * Remove Item from user cart
+     *
+     * @param sessionToken
+     * @param cartItem the item to be removed
+     * @return all items in the cart
+     */
     @Override
     public CartOut removeItem(String sessionToken, CartItem cartItem) {
         if(USER_CART.get(sessionToken) != null) {
