@@ -1,5 +1,7 @@
 package com.kata.shoppingbook.model.cart.in;
 
+import com.kata.shoppingbook.model.Book;
+
 import java.util.Collection;
 
 public class CartIn {
@@ -16,6 +18,10 @@ public class CartIn {
 
     public Collection<CartItem> getCartItems() {
         return cartItems;
+    }
+
+    public void removeCartItem(CartItem cartItem){
+        cartItems.remove(cartItem);
     }
 
     public void setCartItems(Collection<CartItem> cartItems) {

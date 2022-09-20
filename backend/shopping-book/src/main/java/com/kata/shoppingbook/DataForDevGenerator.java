@@ -64,7 +64,7 @@ public class DataForDevGenerator implements CommandLineRunner {
                 img2
         );
 
-        String img3 = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + port + "/images/clean-coder.png";
+        String img3 = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + port + "/images/clean-architecture.jpeg";
         Book book3 = new Book(
                 3,
                 "Clean Architecture",
@@ -84,7 +84,7 @@ public class DataForDevGenerator implements CommandLineRunner {
                 img4
         );
 
-        String img5 = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + port + "/images/clean-architecture.jpeg";
+        String img5 = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + port + "/images/legacy-code.jpeg";
         Book book5 = new Book(
                 5,
                 "Working Effectively With Legacy Code",

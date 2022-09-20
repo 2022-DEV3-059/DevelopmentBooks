@@ -15,6 +15,7 @@ import java.math.RoundingMode;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 public class CartServiceTest {
 
 
@@ -23,7 +24,7 @@ public class CartServiceTest {
 
 
     @Test
-    void addToCartTestFor1Call(){
+    void addToCartTestFor1Call() {
         String sessionToken = UUID.randomUUID().toString();
         CartIn cart = new CartIn(Collections.singleton(
                 new CartItem(
@@ -65,7 +66,7 @@ public class CartServiceTest {
     }
 
     @Test
-    void addToCartTestFor2CallWithSameSession(){
+    void addToCartTestFor2CallWithSameSession() {
         String sessionToken = UUID.randomUUID().toString();
 
         CartIn cart1 = new CartIn(Collections.singleton(
@@ -115,7 +116,7 @@ public class CartServiceTest {
 
         List<ItemWithDiscount> itemWithDiscounts2 = Arrays.asList(
                 new ItemWithDiscount(
-                        Collections.singleton( new Book(
+                        Collections.singleton(new Book(
                                 1,
                                 "Mock title 1",
                                 2022,
@@ -125,7 +126,7 @@ public class CartServiceTest {
                         )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
                 ),
                 new ItemWithDiscount(
-                        Collections.singleton( new Book(
+                        Collections.singleton(new Book(
                                 1,
                                 "Mock title 1",
                                 2022,
@@ -148,7 +149,7 @@ public class CartServiceTest {
     }
 
     @Test
-    void addToCartTestFor2CallWithDifferentSession(){
+    void addToCartTestFor2CallWithDifferentSession() {
         String sessionToken1 = UUID.randomUUID().toString();
 
         CartIn cart1 = new CartIn(Collections.singleton(
@@ -231,7 +232,7 @@ public class CartServiceTest {
 
     @Test
     void getCartForEmptySession() {
-        String session= UUID.randomUUID().toString();
+        String session = UUID.randomUUID().toString();
 
         CartOut cart = cartService.getCart(session);
 
@@ -243,7 +244,7 @@ public class CartServiceTest {
 
     @Test
     void getCartForNonEmptySession() {
-        String session= UUID.randomUUID().toString();
+        String session = UUID.randomUUID().toString();
 
         // add to cart
 
@@ -284,5 +285,196 @@ public class CartServiceTest {
         assertEquals(1, cart.getItemsAndDiscount().size());
         assertEquals(new BigDecimal(50).setScale(2, RoundingMode.HALF_UP), cart.getTotalPrice());
         assertEquals(session, cart.getSessionToken());
+    }
+
+    @Test
+    void removeItem() {
+        String sessionToken = UUID.randomUUID().toString();
+
+        CartIn cart1 = new CartIn(Collections.singleton(
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        2
+                )
+        ), sessionToken);
+
+        List<ItemWithDiscount> itemWithDiscounts = Arrays.asList(
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                ),
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
+                .thenReturn(itemWithDiscounts);
+
+        cartService.addToCart(cart1);
+
+        CartItem cartItemToBeRemoved = new CartItem(
+                new Book(
+                        1,
+                        "Mock title 1",
+                        2022,
+                        new Author(1, "author 1"),
+                        new BigDecimal(50),
+                        null
+                ),
+                1
+        );
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
+                .thenReturn(Collections.singletonList( new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )));
+
+        CartOut cartOut = cartService.removeItem(sessionToken, cartItemToBeRemoved);
+
+        assertEquals(1, cartOut.getCartCount());
+    }
+
+    @Test
+    void removeNonEXistingItem() {
+        String sessionToken = UUID.randomUUID().toString();
+
+        CartIn cart1 = new CartIn(Collections.singleton(
+                new CartItem(
+                        new Book(
+                                2,
+                                "Mock title 2",
+                                2022,
+                                new Author(2, "author 2"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        2
+                )
+        ), sessionToken);
+
+        List<ItemWithDiscount> itemWithDiscounts = Arrays.asList(
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                ),
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
+                .thenReturn(itemWithDiscounts);
+
+        cartService.addToCart(cart1);
+
+        CartItem cartItemToBeRemoved = new CartItem(
+                new Book(
+                        1,
+                        "Mock title 1",
+                        2022,
+                        new Author(1, "author 1"),
+                        new BigDecimal(50),
+                        null
+                ),
+                1
+        );
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
+                .thenReturn(itemWithDiscounts);
+
+        CartOut cartOut = cartService.removeItem(sessionToken, cartItemToBeRemoved);
+
+        assertEquals(2, cartOut.getCartCount());
+    }
+
+    @Test
+    void removeEmptyItem() {
+        String sessionToken = UUID.randomUUID().toString();
+
+        CartIn cart1 = new CartIn(Collections.singleton(
+                new CartItem(
+                        new Book(
+                                2,
+                                "Mock title 2",
+                                2022,
+                                new Author(2, "author 2"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        2
+                )
+        ), sessionToken);
+
+        List<ItemWithDiscount> itemWithDiscounts = Arrays.asList(
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                ),
+                new ItemWithDiscount(
+                        Collections.singleton(new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        )), 0d, new BigDecimal(50).setScale(2, RoundingMode.HALF_UP)
+                )
+        );
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
+                .thenReturn(itemWithDiscounts);
+
+        cartService.addToCart(cart1);
+
+        CartItem cartItemToBeRemoved = new CartItem();
+        Mockito.when(discountService.getDiscountForCart(Mockito.anyCollection()))
+                .thenReturn(itemWithDiscounts);
+
+        CartOut cartOut = cartService.removeItem(sessionToken, cartItemToBeRemoved);
+
+        assertEquals(2, cartOut.getCartCount());
     }
 }

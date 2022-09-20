@@ -327,4 +327,250 @@ public class CartControllerIntegrationTest {
         assertEquals(0, cartOut.getCartCount());
 
     }
+
+    @Test
+    void removeToCartTest() throws Exception {
+        // add to cart
+        String sessionToken = UUID.randomUUID().toString();
+
+        CartIn cartIn = new CartIn(Arrays.asList(
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                ),
+                new CartItem(
+                        new Book(
+                                2,
+                                "Mock title 2",
+                                2022,
+                                new Author(2, "author 2"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                )
+        ), sessionToken);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/cart")
+                                .contentType("application/json")
+                                .content(MAPPER.writeValueAsBytes(cartIn)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemsAndDiscount").hasJsonPath())
+                .andExpect(jsonPath("$.totalPrice").hasJsonPath())
+                .andExpect(jsonPath("$.sessionToken").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").value(2))
+                .andReturn();
+
+        //remove item
+        CartItem cartItem = new CartItem(
+                new Book(
+                        1,
+                        "Mock title 1",
+                        2022,
+                        new Author(1, "author 1"),
+                        new BigDecimal(50),
+                        null
+                ),
+                1
+        );
+
+        MvcResult result = mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/cart/" + sessionToken)
+                                .contentType("application/json")
+                                .content(MAPPER.writeValueAsBytes(cartItem)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemsAndDiscount").hasJsonPath())
+                .andExpect(jsonPath("$.totalPrice").hasJsonPath())
+                .andExpect(jsonPath("$.sessionToken").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").value(1))
+                .andReturn();
+
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals("application/json", result.getResponse().getContentType());
+    }
+
+    @Test
+    void removeToCartTest2() throws Exception {
+        // add to cart
+        String sessionToken = UUID.randomUUID().toString();
+
+        CartIn cartIn = new CartIn(Arrays.asList(
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                ),
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                ),
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                )
+        ), sessionToken);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/cart")
+                                .contentType("application/json")
+                                .content(MAPPER.writeValueAsBytes(cartIn)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemsAndDiscount").hasJsonPath())
+                .andExpect(jsonPath("$.totalPrice").hasJsonPath())
+                .andExpect(jsonPath("$.sessionToken").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").value(3))
+                .andReturn();
+
+        //remove item
+        CartItem cartItem = new CartItem(
+                new Book(
+                        1,
+                        "Mock title 1",
+                        2022,
+                        new Author(1, "author 1"),
+                        new BigDecimal(50),
+                        null
+                ),
+                1
+        );
+
+        MvcResult result = mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/cart/" + sessionToken)
+                                .contentType("application/json")
+                                .content(MAPPER.writeValueAsBytes(cartItem)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemsAndDiscount").hasJsonPath())
+                .andExpect(jsonPath("$.totalPrice").hasJsonPath())
+                .andExpect(jsonPath("$.sessionToken").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").value(2))
+                .andReturn();
+
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals("application/json", result.getResponse().getContentType());
+    }
+
+    @Test
+    void removeToCartTest3() throws Exception {
+        // add to cart
+        String sessionToken = UUID.randomUUID().toString();
+
+        CartIn cartIn = new CartIn(Arrays.asList(
+                new CartItem(
+                        new Book(
+                                3,
+                                "Mock title 3",
+                                2022,
+                                new Author(3, "author 3"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                ),
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                ),
+                new CartItem(
+                        new Book(
+                                2,
+                                "Mock title 21",
+                                2022,
+                                new Author(2, "author 2"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                ),
+                new CartItem(
+                        new Book(
+                                1,
+                                "Mock title 1",
+                                2022,
+                                new Author(1, "author 1"),
+                                new BigDecimal(50),
+                                null
+                        ),
+                        1
+                )
+        ), sessionToken);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/cart")
+                                .contentType("application/json")
+                                .content(MAPPER.writeValueAsBytes(cartIn)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemsAndDiscount").hasJsonPath())
+                .andExpect(jsonPath("$.totalPrice").hasJsonPath())
+                .andExpect(jsonPath("$.sessionToken").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").value(4))
+                .andReturn();
+
+        //remove item
+        CartItem cartItem = new CartItem(
+                new Book(
+                        1,
+                        "Mock title 1",
+                        2022,
+                        new Author(1, "author 1"),
+                        new BigDecimal(50),
+                        null
+                ),
+                1
+        );
+
+        MvcResult result = mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/cart/" + sessionToken)
+                                .contentType("application/json")
+                                .content(MAPPER.writeValueAsBytes(cartItem)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemsAndDiscount").hasJsonPath())
+                .andExpect(jsonPath("$.totalPrice").hasJsonPath())
+                .andExpect(jsonPath("$.sessionToken").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").hasJsonPath())
+                .andExpect(jsonPath("$.cartCount").value(3))
+                .andReturn();
+
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals("application/json", result.getResponse().getContentType());
+    }
 }

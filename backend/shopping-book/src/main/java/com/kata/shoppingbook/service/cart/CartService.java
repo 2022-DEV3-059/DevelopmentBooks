@@ -1,5 +1,6 @@
 package com.kata.shoppingbook.service.cart;
 
+import com.kata.shoppingbook.model.Book;
 import com.kata.shoppingbook.model.cart.in.CartIn;
 import com.kata.shoppingbook.model.cart.in.CartItem;
 import com.kata.shoppingbook.model.cart.out.CartOut;
@@ -40,6 +41,31 @@ public class CartService implements ICartService {
             return getCartOutByCartIn(USER_CART.get(sessionToken));
         }
         return new CartOut(Collections.emptyList(), BigDecimal.ZERO, sessionToken);
+    }
+
+    @Override
+    public CartOut removeItem(String sessionToken, CartItem cartItem) {
+        if(USER_CART.get(sessionToken) != null) {
+            removeCartItemFromUserCartIn(sessionToken, cartItem);
+        }
+        return getCartOutByCartIn(USER_CART.get(sessionToken));
+    }
+
+    private void removeCartItemFromUserCartIn(String sessionToken, CartItem cartItem) {
+        CartIn cartIn = USER_CART.get(sessionToken);
+        Book book = cartItem.getBook();
+        if(book == null) {
+            return;
+        }
+        for(CartItem cart : cartIn.getCartItems()) {
+            if(cart !=null && cart.getBook().getBookId() == book.getBookId()) {
+                cart.setQuantity(cart.getQuantity() - 1 );
+                if(cart.getQuantity() == 0) {
+                    cartIn.removeCartItem(cart);
+                }
+                break;
+            }
+        }
     }
 
     private void appendCartForSession(CartIn cart){

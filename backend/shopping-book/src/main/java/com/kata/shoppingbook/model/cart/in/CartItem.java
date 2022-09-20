@@ -2,6 +2,8 @@ package com.kata.shoppingbook.model.cart.in;
 
 import com.kata.shoppingbook.model.Book;
 
+import java.util.Objects;
+
 public class CartItem {
     private Book book;
     private Integer quantity;
@@ -28,6 +30,19 @@ public class CartItem {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return book.equals(cartItem.book);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(book);
     }
 
     @Override

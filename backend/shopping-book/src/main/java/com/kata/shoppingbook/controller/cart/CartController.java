@@ -1,6 +1,7 @@
 package com.kata.shoppingbook.controller.cart;
 
 import com.kata.shoppingbook.model.cart.in.CartIn;
+import com.kata.shoppingbook.model.cart.in.CartItem;
 import com.kata.shoppingbook.model.cart.out.CartOut;
 import com.kata.shoppingbook.service.cart.ICartService;
 import org.springframework.web.bind.annotation.*;
@@ -25,5 +26,11 @@ public class CartController implements ICartController {
     @GetMapping("/{sessionToken}")
     public CartOut getCart(@PathVariable String sessionToken) {
         return cartService.getCart(sessionToken);
+    }
+
+    @Override
+    @DeleteMapping("/{sessionToken}")
+    public CartOut removeItem(@PathVariable String sessionToken, @RequestBody CartItem cartItem) {
+        return cartService.removeItem(sessionToken, cartItem);
     }
 }
