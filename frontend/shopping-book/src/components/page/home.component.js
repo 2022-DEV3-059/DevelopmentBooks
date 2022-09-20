@@ -2,10 +2,10 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from './header.component'
 
-export default function Home() {
+export default function Home({cartCount}) {
   return (
     <div>
-        <Header/>
+        <Header cartCount={cartCount}/>
         <Outlet/>
     </div>
   )

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Book({book}) {
+export default function Book({book, addToCartAction}) {
   return (
     <div>
         <div className="card" style={{width: "18rem"}}>
@@ -10,7 +10,7 @@ export default function Book({book}) {
                 <h6 className="card-subtitle mb-2 text-muted">{book.author?.authorName}</h6>
                 <p className="card-text">{book.releaseYear}</p>
                 <p>{book.price} $</p>
-                <button  className="btn btn-primary">ADD TO CART</button>
+                <button  className="btn btn-primary" onClick={() => addToCartAction(book)}>ADD TO CART</button>
             </div>
         </div>
     </div>

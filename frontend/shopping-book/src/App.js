@@ -6,14 +6,18 @@ import Cart from './components/cart/cart.component';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './components/page/home.component';
+import { useState } from 'react';
 
 function App() {
+
+  const [cartCount, setCartCount] = useState(0);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home/>} >
+        <Route path='/' element={<Home cartCount={cartCount}/>} >
           <Route index path='cart' element={<Cart />} />
-          <Route path='books' element={<Books/>} />
+          <Route path='books' element={<Books updateCartCountAction={setCartCount}/>} />
         </Route>
       </Routes>
     </BrowserRouter>
